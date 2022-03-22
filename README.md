@@ -6,5 +6,5 @@ Some basic DSP algorithms implemented with xilinx IP cores with explanation, Ver
 | Software | Version, plugins |
 | ------ | ------ |
 | CygWin | make, git |
-| Python | Python 3.9.0, Numpy, matplotlib |
+| Python | Python 3.9.0, Numpy, matplotlib, scipy |
 | Vivado | 2019.1 |

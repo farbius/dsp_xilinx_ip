@@ -111,7 +111,7 @@ $finish;
 end // initial begin
 
 
-fir_compiler_0 dut_0
+fir_lowpass dut_0
 (
     .aclk (aclk),
     .aresetn(aresetn),
@@ -125,7 +125,7 @@ fir_compiler_0 dut_0
 );
 
 
-fir_compiler_1 dut_1
+fir_bandpass dut_1
 (
     .aclk (aclk),
     .aresetn(aresetn),
@@ -139,7 +139,7 @@ fir_compiler_1 dut_1
 );
 
 
-fir_compiler_2 dut_2
+fir_highpass dut_2
 (
     .aclk (aclk),
     .aresetn(aresetn),

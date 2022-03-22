@@ -71,11 +71,11 @@ def main():
     
 
       
-    
+    # get frequency responses for every FIR
     delta = np.zeros(np.size(s))
     delta[0] = 1
     
-    hLP, yLP = fir_lowpass_filter( delta,  8e6, fs, order)
+    hLP, yLP = fir_lowpass_filter(delta,  8e6, fs, order)
     yLPF= np.fft.fft(yLP)
               
     

@@ -34,20 +34,20 @@ set_property top dds_tb [get_filesets sim_1]
 set_property top_lib xil_defaultlib [get_filesets sim_1]
 update_compile_order -fileset sim_1
 
-create_ip -name fir_compiler -vendor xilinx.com -library ip -version 7.2 -module_name fir_compiler_0
-set_property -dict [list CONFIG.CoefficientSource {COE_File} CONFIG.Coefficient_File $TclPath/files/LPF.coe CONFIG.Sample_Frequency {100} CONFIG.Clock_Frequency {100} CONFIG.Has_ARESETn {true} CONFIG.Coefficient_Sets {1} CONFIG.Clock_Frequency {100} CONFIG.Coefficient_Sign {Signed} CONFIG.Quantization {Integer_Coefficients} CONFIG.Coefficient_Width {16} CONFIG.Coefficient_Fractional_Bits {0} CONFIG.Coefficient_Structure {Inferred} CONFIG.Data_Width {16} CONFIG.Output_Width {32} CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} CONFIG.ColumnConfig {16}] [get_ips fir_compiler_0]
-generate_target {instantiation_template} [get_files $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_compiler_0/fir_compiler_0.xci]
-generate_target all [get_files  $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_compiler_0/fir_compiler_0.xci]
+create_ip -name fir_compiler -vendor xilinx.com -library ip -version 7.2 -module_name fir_lowpass
+set_property -dict [list CONFIG.Component_Name {fir_lowpass} CONFIG.CoefficientSource {COE_File} CONFIG.Coefficient_File $TclPath/files/LPF.coe CONFIG.Sample_Frequency {100} CONFIG.Clock_Frequency {100} CONFIG.Has_ARESETn {true} CONFIG.Coefficient_Sets {1} CONFIG.Clock_Frequency {100} CONFIG.Coefficient_Sign {Signed} CONFIG.Quantization {Integer_Coefficients} CONFIG.Coefficient_Width {16} CONFIG.Coefficient_Fractional_Bits {0} CONFIG.Coefficient_Structure {Inferred} CONFIG.Data_Width {16} CONFIG.Output_Width {32} CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} CONFIG.ColumnConfig {16}] [get_ips fir_lowpass]
+generate_target {instantiation_template} [get_files $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_lowpass/fir_lowpass.xci]
+generate_target all [get_files  $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_lowpass/fir_lowpass.xci]
 
-create_ip -name fir_compiler -vendor xilinx.com -library ip -version 7.2 -module_name fir_compiler_1
-set_property -dict [list CONFIG.CoefficientSource {COE_File} CONFIG.Coefficient_File $TclPath/files/BPF.coe CONFIG.Sample_Frequency {100} CONFIG.Clock_Frequency {100} CONFIG.Has_ARESETn {true} CONFIG.Coefficient_Sets {1} CONFIG.Clock_Frequency {100} CONFIG.Coefficient_Sign {Signed} CONFIG.Quantization {Integer_Coefficients} CONFIG.Coefficient_Width {16} CONFIG.Coefficient_Fractional_Bits {0} CONFIG.Coefficient_Structure {Inferred} CONFIG.Data_Width {16} CONFIG.Output_Width {32} CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} CONFIG.ColumnConfig {16}] [get_ips fir_compiler_1]
-generate_target {instantiation_template} [get_files $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_compiler_1/fir_compiler_1.xci]
-generate_target all [get_files  $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_compiler_1/fir_compiler_1.xci]
+create_ip -name fir_compiler -vendor xilinx.com -library ip -version 7.2 -module_name fir_bandpass
+set_property -dict [list CONFIG.Component_Name {fir_bandpass} CONFIG.CoefficientSource {COE_File} CONFIG.Coefficient_File $TclPath/files/BPF.coe CONFIG.Sample_Frequency {100} CONFIG.Clock_Frequency {100} CONFIG.Has_ARESETn {true} CONFIG.Coefficient_Sets {1} CONFIG.Clock_Frequency {100} CONFIG.Coefficient_Sign {Signed} CONFIG.Quantization {Integer_Coefficients} CONFIG.Coefficient_Width {16} CONFIG.Coefficient_Fractional_Bits {0} CONFIG.Coefficient_Structure {Inferred} CONFIG.Data_Width {16} CONFIG.Output_Width {32} CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} CONFIG.ColumnConfig {16}] [get_ips fir_bandpass]
+generate_target {instantiation_template} [get_files $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_bandpass/fir_bandpass.xci]
+generate_target all [get_files  $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_bandpass/fir_bandpass.xci]
 
-create_ip -name fir_compiler -vendor xilinx.com -library ip -version 7.2 -module_name fir_compiler_2
-set_property -dict [list CONFIG.CoefficientSource {COE_File} CONFIG.Coefficient_File $TclPath/files/HPF.coe CONFIG.Sample_Frequency {100} CONFIG.Clock_Frequency {100} CONFIG.Has_ARESETn {true} CONFIG.Coefficient_Sets {1} CONFIG.Clock_Frequency {100} CONFIG.Coefficient_Sign {Signed} CONFIG.Quantization {Integer_Coefficients} CONFIG.Coefficient_Width {16} CONFIG.Coefficient_Fractional_Bits {0} CONFIG.Coefficient_Structure {Inferred} CONFIG.Data_Width {16} CONFIG.Output_Width {32} CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} CONFIG.ColumnConfig {16}] [get_ips fir_compiler_2]
-generate_target {instantiation_template} [get_files $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_compiler_2/fir_compiler_2.xci]
-generate_target all [get_files  $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_compiler_1/fir_compiler_2.xci]
+create_ip -name fir_compiler -vendor xilinx.com -library ip -version 7.2 -module_name fir_highpass
+set_property -dict [list CONFIG.Component_Name {fir_highpass} CONFIG.CoefficientSource {COE_File} CONFIG.Coefficient_File $TclPath/files/HPF.coe CONFIG.Sample_Frequency {100} CONFIG.Clock_Frequency {100} CONFIG.Has_ARESETn {true} CONFIG.Coefficient_Sets {1} CONFIG.Clock_Frequency {100} CONFIG.Coefficient_Sign {Signed} CONFIG.Quantization {Integer_Coefficients} CONFIG.Coefficient_Width {16} CONFIG.Coefficient_Fractional_Bits {0} CONFIG.Coefficient_Structure {Inferred} CONFIG.Data_Width {16} CONFIG.Output_Width {32} CONFIG.Filter_Architecture {Systolic_Multiply_Accumulate} CONFIG.ColumnConfig {16}] [get_ips fir_highpass]
+generate_target {instantiation_template} [get_files $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_highpass/fir_highpass.xci]
+generate_target all [get_files  $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_highpass/fir_highpass.xci]
 
 set_property SOURCE_SET sources_1 [get_filesets sim_1]
 add_files -fileset sim_1 -norecurse $TclPath/rtl_tb/fir_tb.v
