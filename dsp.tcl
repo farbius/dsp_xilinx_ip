@@ -89,3 +89,13 @@ generate_target all [get_files  $ProjectPath/$ProjectName.srcs/sources_1/ip/fir_
 set_property SOURCE_SET sources_1 [get_filesets sim_1]
 add_files -fileset sim_1 -norecurse $TclPath/rtl_tb/hilbert_tb.v
 add_files -fileset sim_1 -norecurse $TclPath/waveform/hilbert_tb_behav.wcfg
+
+
+create_ip -name xfft -vendor xilinx.com -library ip -version 9.1 -module_name xfft_0
+set_property -dict [list CONFIG.Component_Name {xfft_0} CONFIG.transform_length {2048} CONFIG.target_clock_frequency {100} CONFIG.implementation_options {pipelined_streaming_io} CONFIG.target_data_throughput {100} CONFIG.run_time_configurable_transform_length {true} CONFIG.input_width {32} CONFIG.phase_factor_width {24} CONFIG.aresetn {true} CONFIG.output_ordering {natural_order} CONFIG.number_of_stages_using_block_ram_for_data_and_phase_factors {4}] [get_ips xfft_0]
+generate_target {instantiation_template} [get_files $ProjectPath/$ProjectName.srcs/sources_1/ip/xfft_0/xfft_0.xci]
+generate_target all [get_files  $ProjectPath/$ProjectName.srcs/sources_1/ip/xfft_0/xfft_0.xci]
+
+set_property SOURCE_SET sources_1 [get_filesets sim_1]
+add_files -fileset sim_1 -norecurse $TclPath/rtl_tb/fft_tb.v
+add_files -fileset sim_1 -norecurse $TclPath/waveform/fft_tb_behav.wcfg
