@@ -19,28 +19,38 @@ def main():
     f   = np.linspace(0, Fs, N)
     x   = np.exp(2*np.pi*1j*16e6*t)
     
-    q = 10**(-snr/20)
+    q   = 10**(-snr/20)
     
-    # x = pulse(x, 256)
     
     # adding noise
-    n = q*(np.random.randn(np.size(x)) + 1j*np.random.randn(np.size(x)))
-    u = x + n
+    n   = q*(np.random.randn(np.size(x)) + 1j*np.random.randn(np.size(x)))
+    # sum of the signal and noise
+    u   = x + n
     
-    print(np.size(x))
-    uF= np.fft.fft(u, n=np.size(x), norm=None)/np.size(x)
+    # writing input signal for RTL simulation
+    uRe_int16       = np.round((2**15 - 16)*(np.real(u)/np.max(np.real(u))))
+    uIm_int16       = np.round((2**15 - 16)*(np.imag(u)/np.max(np.imag(u))))
+    u_int16         = np.zeros(2*N) # parsing data in the format {re0, im0, re1, im1, ...}
+    u_int16[0::2]   = uRe_int16
+    u_int16[1::2]   = uIm_int16
+    np.savetxt('../files/fft_input.txt', u_int16, fmt='%d')  
+    
+    
+    # normalized FFT
+    uF= np.fft.fft(u, n=np.size(x), norm="forward")
+    # frequency axis 
     f_axis = np.arange(np.size(x))/(np.size(x)) * Fs
     
     SNR_signal = np.ones(np.size(f_axis))*(-snr)
     SNR_FFT    = SNR_signal - 10*np.log10(np.size(f_axis))
-    print(10*np.log10(np.size(f_axis)))
     
     plt.figure()
     plt.plot(f_axis/1e6, 20*np.log10(np.abs(uF)), '.-b')
-    plt.plot(f_axis/1e6, SNR_signal, '.-r', label="snr level of the input")
-    plt.plot(f_axis/1e6, SNR_FFT, '.-k', label="increased by FFT snr level")
+    plt.plot(f_axis/1e6, SNR_signal, '.-r', label="Input SNR is {} dB".format(snr))
+    plt.plot(f_axis/1e6, SNR_FFT, '.-k', label="FFT SNR is 10*log10({}) = {} dB".format(N, np.round(10*np.log10(N))))
     plt.ylabel('dB ')
     plt.xlabel('f, MHz')
+    plt.title('Spectrum of {} point normalized FFT'.format(N))
     plt.legend(loc="upper right")
     plt.grid()
     

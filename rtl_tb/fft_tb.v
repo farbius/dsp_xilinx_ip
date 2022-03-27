@@ -6,10 +6,13 @@ parameter       CLOCK_PERIOD    = 10;
 parameter       T_HOLD    = 1;
 
 
+reg             aresetn = 0;
+reg             aclk    = 0;
+
 reg 			s_axis_config_tvalid = 0;
 reg [23 : 0] 	s_axis_config_tdata = 0;
 
-wire 			s_axis_data_tready;
+wire 			s_axis_config_tready;
 
 reg [63 : 0]    s_axis_data_tdata = 0;
 reg     		s_axis_data_tvalid = 0;
@@ -30,6 +33,16 @@ wire    		event_data_out_channel_halt;
 
 
 integer         fp_in  = 0;
+
+function integer clogb2;
+input [31:0] value;
+integer i;
+begin
+    clogb2 = 0;
+    for(i = 0; 2**i < value; i = i + 1)
+    clogb2 = i + 1;
+end
+endfunction
 
 
 always
@@ -101,6 +114,33 @@ task drive_sample;
         
     end
  endtask 
+ 
+reg  [11 : 0]   config_reg = 0;
+reg   [ 3: 0]     log2nFFT = 0;
+ 
+always @(*)
+      case (log2nFFT)
+         4'b0000: config_reg = 12'd6;
+         4'b0001: config_reg = 12'd6;
+         4'b0010: config_reg = 12'd6;
+         4'b0011: config_reg = 12'd6;
+         4'b0100: config_reg = 12'd10;
+         4'b0101: config_reg = 12'd26;
+         4'b0110: config_reg = 12'd42;
+         4'b0111: config_reg = 12'd106;
+         
+         4'b1000: config_reg = 12'd170;
+         4'b1001: config_reg = 12'd426;
+         4'b1010: config_reg = 12'd682;
+         4'b1011: config_reg = 12'd1706;
+         4'b1100: config_reg = 12'd2730;
+         4'b1101: config_reg = 12'd2730;
+         4'b1110: config_reg = 12'd2730;
+         4'b1111: config_reg = 12'd2730;
+      endcase
+
+always @(*)      
+    s_axis_config_tdata  = {3'b000, config_reg, 5'b10000, log2nFFT};
 
 initial begin
 $display("<-- Start simulation");
@@ -109,8 +149,8 @@ $display("<-- Start simulation");
 
 @(posedge aclk);
 
-fp = $fopen("../../../../../files/fft_input.txt", "r");
-drive_frame(1000, 0, fp_in);
+fp_in = $fopen("../../../../../files/fft_input.txt", "r");
+drive_frame(512, 0, fp_in);
 repeat(100)@(posedge aclk);
 $fclose(fp_in);
 
