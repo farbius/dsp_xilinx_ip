@@ -10,16 +10,16 @@ reg             aresetn = 0;
 reg             aclk    = 0;
 
 reg 			s_axis_config_tvalid = 0;
-reg [23 : 0] 	s_axis_config_tdata = 0;
+reg  [23 : 0] 	s_axis_config_tdata = 0;
 
 wire 			s_axis_config_tready;
 
-reg [63 : 0]    s_axis_data_tdata = 0;
+reg  [31 : 0]   s_axis_data_tdata = 0;
 reg     		s_axis_data_tvalid = 0;
 wire     		s_axis_data_tready;
 reg    			s_axis_data_tlast = 0;
 
-wire [63 : 0] 	m_axis_data_tdata;
+wire [31 : 0] 	m_axis_data_tdata;
 wire    		m_axis_data_tvalid;
 reg    			m_axis_data_tready = 1;
 wire    		m_axis_data_tlast = 0;
@@ -31,8 +31,11 @@ wire    		event_status_channel_halt;
 wire    		event_data_in_channel_halt;
 wire    		event_data_out_channel_halt;
 
+//wire            wr2f_valid = m_axis_data_tvalid & m_axis_data_tready;
 
-integer         fp_in  = 0;
+
+integer         fp_in   = 0;
+integer         fp_out  = 0;
 
 function integer clogb2;
 input [31:0] value;
@@ -65,7 +68,7 @@ $display("<-- Reset done");
 end
 
 task drive_sample;
-    input reg [63:0]                data;
+    input reg [31:0]                data;
     input reg                       last;
     input integer                   valid_mode;
     begin
@@ -96,7 +99,7 @@ task drive_sample;
     input integer fp;
     reg sample_last;
     integer idx;
-    reg [31:0] x_re, x_im;
+    reg [15:0] x_re, x_im;
     begin
          
           idx = 0;
@@ -116,7 +119,7 @@ task drive_sample;
  endtask 
  
 reg  [11 : 0]   config_reg = 0;
-reg   [ 3: 0]     log2nFFT = 0;
+reg   [3 : 0]     log2nFFT = 0;
  
 always @(*)
       case (log2nFFT)
@@ -139,8 +142,6 @@ always @(*)
          4'b1111: config_reg = 12'd2730;
       endcase
 
-always @(*)      
-    s_axis_config_tdata  = {3'b000, config_reg, 5'b10000, log2nFFT};
 
 initial begin
 $display("<-- Start simulation");
@@ -148,15 +149,63 @@ $display("<-- Start simulation");
 @(reset_done);
 
 @(posedge aclk);
+repeat(10)@(posedge aclk);
 
-fp_in = $fopen("../../../../../files/fft_input.txt", "r");
+log2nFFT = clogb2(512);
+
+@(posedge aclk);
+s_axis_config_tdata  = {3'b000, config_reg, 5'b10000, log2nFFT};
+@(posedge aclk);
+s_axis_config_tvalid = 0;
+@(posedge aclk);
+s_axis_config_tvalid = 1;
+@(posedge aclk);
+s_axis_config_tvalid = 0;
+
+
+fp_in  = $fopen("../../../../../files/fft_512_input.txt", "r");
+fp_out = $fopen("../../../../../files/fft_512_out.txt", "w");
 drive_frame(512, 0, fp_in);
-repeat(100)@(posedge aclk);
+@(posedge aclk);
 $fclose(fp_in);
+// wait for master tlast
+@(posedge m_axis_data_tlast);
+repeat(10)@(posedge aclk);
+$fclose(fp_out);
 
+// 1024 points
+log2nFFT = clogb2(1024);
+
+@(posedge aclk);
+s_axis_config_tdata  = {3'b000, config_reg, 5'b10000, log2nFFT};
+@(posedge aclk);
+s_axis_config_tvalid = 0;
+@(posedge aclk);
+s_axis_config_tvalid = 1;
+@(posedge aclk);
+s_axis_config_tvalid = 0;
+
+
+fp_in  = $fopen("../../../../../files/fft_1024_input.txt", "r");
+fp_out = $fopen("../../../../../files/fft_1024_out.txt", "w");
+drive_frame(1024, 0, fp_in);
+@(posedge aclk);
+$fclose(fp_in);
+// wait for master tlast
+@(posedge m_axis_data_tlast);
+repeat(10)@(posedge aclk);
+$fclose(fp_out);
 $display("<-- Simulation done !");
 $finish;
 end // initial begin
+
+
+always @(posedge aclk)
+        if(m_axis_data_tvalid)begin
+            $fwrite(fp_out, "%d \n", $signed(m_axis_data_tdata[15: 0]));
+            $fwrite(fp_out, "%d \n", $signed(m_axis_data_tdata[31:16]));
+        end 
+   
 
 
 xfft_0 dut_0
@@ -179,12 +228,12 @@ xfft_0 dut_0
     .m_axis_data_tready(m_axis_data_tready),
     .m_axis_data_tlast(m_axis_data_tlast),
 	
-	.event_frame_started(),
-    .event_tlast_unexpected(),
-    .event_tlast_missing(),
-    .event_status_channel_halt(),
-    .event_data_in_channel_halt(),
-    .event_data_out_channel_halt()
+	.event_frame_started(event_frame_started),
+    .event_tlast_unexpected(event_tlast_unexpected),
+    .event_tlast_missing(event_tlast_missing),
+    .event_status_channel_halt(event_status_channel_halt),
+    .event_data_in_channel_halt(event_data_in_channel_halt),
+    .event_data_out_channel_halt(event_data_out_channel_halt)
 	
 	
 );

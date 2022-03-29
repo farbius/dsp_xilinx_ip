@@ -25,13 +25,10 @@ Structure of the lections
 					- rtl
 					- tcl
 					
-7. (FFT_ip)FFT+Wind 			- python
+7. (FFT_ip)FFT+IFFT 			- python
 					- rtl
 					- tcl
-					
-8. (FFT_ip)IFFT  			- python
-					- rtl
-					- tcl
+
 					
 					
 	
