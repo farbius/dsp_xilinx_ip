@@ -9,7 +9,7 @@ Some basic DSP algorithms implemented with xilinx IP cores with explanation, Ver
 | Python | Python 3.9.0, Numpy, matplotlib, scipy |
 | Vivado | 2019.1 |
 
-In Enviroment Variables (PATH variable) should be added path to bin folder of the Vivado IDE. For example:
+In Environment Variables (PATH variable) should be added path to bin folder of the Vivado IDE. For example:
 ```
 C:\Xilinx\Vivado\2019.1\bin 
 ```
