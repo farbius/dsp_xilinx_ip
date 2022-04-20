@@ -91,6 +91,7 @@ def main():
     
     
     plt.figure(figsize=(10,10))
+    plt.suptitle("Decimation",fontsize=16,fontweight='bold')
     plt.subplot(221)
     plt.plot(t/1e-6, np.real(x), '.-b',   label="input")
     plt.xlabel('t,usec')
@@ -134,6 +135,7 @@ def main():
     freqs       = np.fft.fftshift(np.fft.fftfreq(n, 1/fs))
     
     plt.figure(figsize=(10,10))
+    plt.suptitle("Interpolation", fontsize=16, fontweight='bold')
     plt.subplot(221)
     plt.plot(t/1e-6, np.real(x_usmpl), '.-b',label="Interpolated")
     plt.xlabel('t,usec')

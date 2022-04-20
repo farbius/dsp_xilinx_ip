@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="31115000001fs"></ZoomEndTime>
-      <Cursor1Time time="18815000000fs"></Cursor1Time>
+      <ZoomStartTime time="35000000fs"></ZoomStartTime>
+      <ZoomEndTime time="36935000001fs"></ZoomEndTime>
+      <Cursor1Time time="16025000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="175"></NameColumnWidth>
-      <ValueColumnWidth column_width="122"></ValueColumnWidth>
+      <ValueColumnWidth column_width="118"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="14" />
    <wvobject fp_name="/fir_DecInt_tb/aresetn" type="logic">
