@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="395000000fs"></ZoomStartTime>
-      <ZoomEndTime time="1121000001fs"></ZoomEndTime>
-      <Cursor1Time time="1000000000fs"></Cursor1Time>
+      <ZoomStartTime time="4545000000fs"></ZoomStartTime>
+      <ZoomEndTime time="6005000001fs"></ZoomEndTime>
+      <Cursor1Time time="5105000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="175"></NameColumnWidth>
-      <ValueColumnWidth column_width="130"></ValueColumnWidth>
+      <ValueColumnWidth column_width="126"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="13" />
    <wvobject fp_name="/hilbert_tb/aresetn" type="logic">
@@ -31,6 +31,9 @@
    <wvobject fp_name="/hilbert_tb/s_axis_tdata" type="array">
       <obj_property name="ElementShortName">s_axis_tdata[15:0]</obj_property>
       <obj_property name="ObjectShortName">s_axis_tdata[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
    </wvobject>
    <wvobject fp_name="/hilbert_tb/s_axis_tvalid" type="logic">
       <obj_property name="ElementShortName">s_axis_tvalid</obj_property>

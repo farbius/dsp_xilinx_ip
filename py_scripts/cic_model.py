@@ -131,6 +131,7 @@ def main():
     
     
     plt.figure(figsize=(10, 10))
+    plt.suptitle("Math Model of the Input signal",fontsize=16,fontweight='bold')
     plt.subplot(211)
     plt.plot(t/1e-6, x, '.-r')   
     plt.grid()
@@ -147,6 +148,7 @@ def main():
     
     
     plt.figure(figsize=(10, 10))
+    plt.suptitle("Math Model of CIC filtering",fontsize=16,fontweight='bold')
     plt.subplot(221)
     plt.plot(y, '.-r')
     plt.grid()
@@ -173,16 +175,6 @@ def main():
     plt.xlabel('f, MHz')
     plt.grid()
     plt.tight_layout()
-    
-    delta = np.zeros(N)
-    delta[0] = 1
-    
-    # yh  = cic_filter(delta, R_Factor, cic_order, 'interp')
-    # YFh = np.fft.fft(yh)
-    
-    # plt.figure()
-    # plt.plot(f/1e6, 10*np.log10(np.abs(YFh)), '.-b')
-    # plt.grid()
     
     
     

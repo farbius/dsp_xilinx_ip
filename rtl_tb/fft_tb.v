@@ -31,11 +31,10 @@ wire    		event_status_channel_halt;
 wire    		event_data_in_channel_halt;
 wire    		event_data_out_channel_halt;
 
-//wire            wr2f_valid = m_axis_data_tvalid & m_axis_data_tready;
-
 
 integer         fp_in   = 0;
 integer         fp_out  = 0;
+integer         fft_en  = 0;
 
 function integer clogb2;
 input [31:0] value;
@@ -120,6 +119,8 @@ task drive_sample;
  
 reg  [11 : 0]   config_reg = 0;
 reg   [3 : 0]     log2nFFT = 0;
+reg   [4 : 0]   FWD  = 5'b10000;
+reg   [4 : 0]   INV  = 5'b00000;
  
 always @(*)
       case (log2nFFT)
@@ -151,10 +152,12 @@ $display("<-- Start simulation");
 @(posedge aclk);
 repeat(10)@(posedge aclk);
 
+$display("<-- Start FFT 512 points");
+fft_en = 1;
 log2nFFT = clogb2(512);
 
 @(posedge aclk);
-s_axis_config_tdata  = {3'b000, config_reg, 5'b10000, log2nFFT};
+s_axis_config_tdata  = {3'b000, config_reg, FWD, log2nFFT};
 @(posedge aclk);
 s_axis_config_tvalid = 0;
 @(posedge aclk);
@@ -172,12 +175,14 @@ $fclose(fp_in);
 @(posedge m_axis_data_tlast);
 repeat(10)@(posedge aclk);
 $fclose(fp_out);
+fft_en = 0;
 
-// 1024 points
-log2nFFT = clogb2(1024);
-
+$display("<-- Start Inverse FFT 512 points");
+fp_in = $fopen("../../../../../files/fft_512_out.txt", "r");
+fp_out = $fopen("../../../../../files/ifft_512_out.txt", "w");
+log2nFFT = clogb2(512);
 @(posedge aclk);
-s_axis_config_tdata  = {3'b000, config_reg, 5'b10000, log2nFFT};
+s_axis_config_tdata  = {3'b000, config_reg, INV, log2nFFT};
 @(posedge aclk);
 s_axis_config_tvalid = 0;
 @(posedge aclk);
@@ -185,16 +190,15 @@ s_axis_config_tvalid = 1;
 @(posedge aclk);
 s_axis_config_tvalid = 0;
 
-
-fp_in  = $fopen("../../../../../files/fft_1024_input.txt", "r");
-fp_out = $fopen("../../../../../files/fft_1024_out.txt", "w");
-drive_frame(1024, 0, fp_in);
+drive_frame(512, 0, fp_in);
 @(posedge aclk);
 $fclose(fp_in);
 // wait for master tlast
 @(posedge m_axis_data_tlast);
 repeat(10)@(posedge aclk);
 $fclose(fp_out);
+
+
 $display("<-- Simulation done !");
 $finish;
 end // initial begin
