@@ -40,3 +40,7 @@ Xilinx IP cores
  |      +-Inverse FFT
  ```
 ## Usage
+After cloning the repository run in a directory run Cygwin terminal. Run MAKE command
+```
+make 
+```
